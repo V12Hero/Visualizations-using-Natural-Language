@@ -15,6 +15,7 @@ import os
 import io
 import base64
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_nvidia_ai_endpoints import ChatNVIDIA
 
 
 def agentBuilder(df: pd.DataFrame, dataset_summary):
@@ -26,7 +27,7 @@ def agentBuilder(df: pd.DataFrame, dataset_summary):
     You MUST first generate a brief plan for how you would solve the task \
     e.g. what transformations you would apply e.g. if you need to construct a new column, what fields you would use, \
     what visualization type you would use, what aesthetics you would use, etc. \
-    The dataset is always stored in df.
+    The dataset is always stores in df do not assume anything else and do not load any other dataset. \
     Below is the dataset summary
     ------
     {dataset_summary}
@@ -44,7 +45,7 @@ def agentBuilder(df: pd.DataFrame, dataset_summary):
     Always add a legend with various colors where appropriate.  \
     Always add a line in the end to save the visual to a variable named 'visual' using gcf, eg: 'visual = plt.gcf()'\
     You MUST return a FULL PYTHON PROGRAM that starts with an import statement ENCLOSED IN BACKTICKS ```  \
-    The dataset is always stores in df do not assume anything else. \
+    The dataset is always stores in df do not assume anything else and do not load any other dataset. \
     DO NOT add any explanation."""
 
     SUMM_PROMPT = """ Summarize the visualization you just created and explain its purpose. \
@@ -63,10 +64,14 @@ def agentBuilder(df: pd.DataFrame, dataset_summary):
         visual: str
         summary: str
 
-    # model = ChatGroq(api_key=os.getenv('GROQ_API_KEY'), model='gemma2-9b-it')
+    model = ChatGroq(api_key=os.getenv('GROQ_API_KEY'), model='gemma2-9b-it')
     # model = ChatGroq(api_key=os.getenv('GROQ_API_KEY'), model='llama-3.1-70b-versatile')
     # model = ChatGroq(api_key=os.getenv('GROQ_API_KEY'), model='mixtral-8x7b-32768')
-    model = ChatGoogleGenerativeAI(model="gemini-1.5-pro")
+    # model = ChatGoogleGenerativeAI(model="gemini-1.5-pro")
+    # model = ChatNVIDIA(
+    #     model="meta/llama-3.1-70b-instruct",
+    #     api_key="xxxxx", 
+    #     )
 
 
     def plan_node(state: AgentState):

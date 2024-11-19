@@ -9,6 +9,7 @@ from langchain_groq import ChatGroq
 import json
 import re
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_nvidia_ai_endpoints import ChatNVIDIA
 
 
 
@@ -117,16 +118,20 @@ def summarizer(df: pd.DataFrame):
 
     summ = Summarizer()
     x = summ.get_column_properties(df)
-    # model = ChatGroq(api_key=os.getenv('GROQ_API_KEY'), model='gemma2-9b-it')  
+    model = ChatGroq(api_key=os.getenv('GROQ_API_KEY'), model='gemma2-9b-it')  
     # model = ChatGroq(api_key=os.getenv('GROQ_API_KEY'), model='llama-3.1-70b-versatile')  
     # model = ChatGroq(api_key=os.getenv('GROQ_API_KEY'), model='mixtral-8x7b-32768')  
-    model = ChatGoogleGenerativeAI(model="gemini-1.5-pro")
+    # model = ChatGoogleGenerativeAI(model="gemini-1.5-pro")
+    # model = ChatNVIDIA(
+    #     model="meta/llama-3.1-70b-instruct",
+    #     api_key="xxxxxx", 
+    #     )
 
     response = model.invoke(template.invoke({
         "list": x 
     }))
     print(response.content)
-    pattern = r'```\n(.*?)\n```'  # Match content between ```json and ```
+    pattern = r'```json\n(.*?)\n```'  # Match content between ```json and ```
     match = re.search(pattern, response.content, re.DOTALL)
 
     if match:
