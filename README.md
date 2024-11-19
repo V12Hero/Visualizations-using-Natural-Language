@@ -69,14 +69,26 @@ This application provides an intuitive interface for users to upload CSV files, 
    ```bash
    pip install -r requirements.txt
    ```
+3. **Set Up Environment Variables**:
+   - Create a `.env` file in the root directory:
+     ```bash
+     touch .env
+     ```
+   - Open the `.env` file in a text editor and add the following keys:
+     ```
+     GOOGLE_API_KEY=<your_google_api_key_here>
+     GROQ_API_KEY=<your_groq_api_key_here>
+     ```
+   - Replace `<your_google_api_key_here>` and `<your_groq_api_key_here>` with your actual API keys, depending on which model you want to use. 
+      You can also change the models in ```AgentBuilder.py``` and ```GoalGenerator.py``` files.
 
-3. **Run the Application**:
+4. **Run the Application**:
    ```bash
    cd app
    streamlit run nl_Visuals.py
    ```
 
-4. **Access the App**:
+5. **Access the App**:
    Open your browser and navigate to `http://localhost:8501`.
 
 ---
